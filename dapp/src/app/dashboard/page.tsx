@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 
+import type { TColorPalette } from '@/lib/types/color-palette';
+import type { TSubscription } from '@/lib/types/subscription';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
 import { Minus, Plus, Save, Upload } from 'lucide-react';
@@ -14,20 +17,6 @@ import { Label } from '@/components/ui/form/label';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-
-interface Subscription {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-}
-
-interface ThemeColors {
-  background: string;
-  primary: string;
-  secondary: string;
-  text: string;
-}
 
 type TFormSchema = z.infer<typeof formSchema>;
 const formSchema = z.object({
@@ -43,10 +32,10 @@ const LandingPageCustomizer = () => {
   const [logo, setLogo] = useState<string>('/api/placeholder/100/100');
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([
+  const [subscriptions, setSubscriptions] = useState<TSubscription[]>([
     { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Piano base' }
   ]);
-  const [colors, setColors] = useState<ThemeColors>({
+  const [colors, setColors] = useState<TColorPalette>({
     background: '#ffffff',
     primary: '#007bff',
     secondary: '#6c757d',
@@ -88,7 +77,7 @@ const LandingPageCustomizer = () => {
     setSubscriptions(subscriptions.filter((sub) => sub.id !== id));
   };
 
-  const updateSubscription = (id: string, field: keyof Subscription, value: string | number) => {
+  const updateSubscription = (id: string, field: keyof TSubscription, value: string | number) => {
     setSubscriptions(
       subscriptions.map((sub) => (sub.id === id ? { ...sub, [field]: value } : sub))
     );
