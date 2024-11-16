@@ -3,14 +3,19 @@ import React from 'react';
 import { Skeleton } from '@nextui-org/skeleton';
 import dynamic from 'next/dynamic';
 
+import { ConnectButton, useActiveAccount, useActiveWallet } from "thirdweb/react";
+import { conectoClient } from './thirdweb/conectoClient';
+import { createWallet, inAppWallet } from "thirdweb/wallets";
+import { baseSepolia } from 'thirdweb/chains';
+
 const ThemeToggle = dynamic(() => import('./ui/theme-toggle'), {
   loading: () => <Skeleton className='h-10 w-10 rounded-medium' />,
   ssr: false
 });
-const Wallet = dynamic(() => import('./wallet'), {
-  loading: () => <Skeleton className='h-10 w-32 rounded-medium' />,
-  ssr: false
-});
+// const Wallet = dynamic(() => import('./wallet'), {
+//   loading: () => <Skeleton className='h-10 w-32 rounded-medium' />,
+//   ssr: false
+// });
 
 export default function Navbar() {
   return (
@@ -19,7 +24,8 @@ export default function Navbar() {
 
       <div className='flex items-center gap-x-5'>
         <ThemeToggle />
-        <Wallet className='w-32' />
+        <ConnectButton client={conectoClient} chain={baseSepolia} />;
+        {/* <Wallet className='w-32' /> */}
       </div>
     </header>
   );
