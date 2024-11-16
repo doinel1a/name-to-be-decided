@@ -5,11 +5,8 @@ import React, { useState } from 'react';
 import type { TColorPalette } from '@/lib/types/color-palette';
 import type { TSubscription } from '@/lib/types/subscription';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
-import { Minus, Plus, Save, Upload } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Minus, Plus, Save, X } from 'lucide-react';
 
 import LandingPageViewer from '@/components/landing-page-viewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,36 +16,20 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-type TFormSchema = z.infer<typeof formSchema>;
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.'
-  }),
-  description: z.string().min(2, {
-    message: 'Name must be at least 2 characters.'
-  })
-});
-
-const LandingPageCustomizer = () => {
+export default function LandingPageCustomizer() {
   const [logo, setLogo] = useState<string>('/api/placeholder/100/100');
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+
   const [subscriptions, setSubscriptions] = useState<TSubscription[]>([
-    { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Piano base' }
+    { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Base plan' }
   ]);
+
   const [colors, setColors] = useState<TColorPalette>({
     background: '#ffffff',
     primary: '#007bff',
     secondary: '#6c757d',
     text: '#000000'
-  });
-
-  const form = useForm<TFormSchema>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      description: ''
-    }
   });
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,9 +48,9 @@ const LandingPageCustomizer = () => {
       ...subscriptions,
       {
         id: Date.now().toString(),
-        name: 'Nuova Subscription',
+        name: 'New description',
         price: 0,
-        description: 'Descrizione'
+        description: 'Description'
       }
     ]);
   };
@@ -86,7 +67,7 @@ const LandingPageCustomizer = () => {
 
   return (
     <div className='flex h-screen'>
-      <div className='h-screen w-1/3 min-w-[400px] overflow-y-auto border-r p-4'>
+      <div className='h-screen w-1/3 min-w-[400px] overflow-y-auto p-4'>
         <Card className='border-0 shadow-none'>
           <CardHeader>
             <CardTitle>Customize your landing Landing Page</CardTitle>
@@ -94,9 +75,15 @@ const LandingPageCustomizer = () => {
           <CardContent>
             <Tabs defaultValue='general' className='w-full'>
               <TabsList className='w-full'>
-                <TabsTrigger value='general'>General</TabsTrigger>
-                <TabsTrigger value='colors'>Colors</TabsTrigger>
-                <TabsTrigger value='subscriptions'>Subscriptions</TabsTrigger>
+                <TabsTrigger value='general' className='w-1/3'>
+                  General
+                </TabsTrigger>
+                <TabsTrigger value='colors' className='w-1/3'>
+                  Colors
+                </TabsTrigger>
+                <TabsTrigger value='subscriptions' className='w-1/3'>
+                  Subscriptions
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value='general' className='space-y-4'>
@@ -108,7 +95,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Nome</Label>
+                  <Label>Name</Label>
                   <Input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
@@ -117,7 +104,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Descrizione</Label>
+                  <Label>Description</Label>
                   <Textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -128,7 +115,7 @@ const LandingPageCustomizer = () => {
 
               <TabsContent value='colors' className='space-y-4'>
                 <div>
-                  <Label>Colore Sfondo</Label>
+                  <Label>Background color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -144,7 +131,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Primario</Label>
+                  <Label>Primary color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -160,7 +147,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Secondario</Label>
+                  <Label>Secondary color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -176,7 +163,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Testo</Label>
+                  <Label>Text color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -195,11 +182,11 @@ const LandingPageCustomizer = () => {
               <TabsContent value='subscriptions' className='space-y-4'>
                 {subscriptions.map((sub) => (
                   <Card key={sub.id}>
-                    <CardContent className='pt-6'>
+                    <CardContent className='relative pt-6'>
                       <div className='flex items-start justify-between'>
                         <div className='flex-1 space-y-4'>
                           <div>
-                            <Label>Nome</Label>
+                            <Label>Name</Label>
                             <Input
                               value={sub.name}
                               onChange={(event) =>
@@ -209,7 +196,7 @@ const LandingPageCustomizer = () => {
                             />
                           </div>
                           <div>
-                            <Label>Prezzo</Label>
+                            <Label>Price</Label>
                             <Input
                               type='number'
                               value={sub.price}
@@ -220,7 +207,7 @@ const LandingPageCustomizer = () => {
                             />
                           </div>
                           <div>
-                            <Label>Descrizione</Label>
+                            <Label>Description</Label>
                             <Textarea
                               value={sub.description}
                               onChange={(event) =>
@@ -230,34 +217,38 @@ const LandingPageCustomizer = () => {
                             />
                           </div>
                         </div>
+
                         <Button
+                          size='sm'
                           color='danger'
-                          className='ml-4'
+                          variant='light'
+                          className='absolute right-2.5 top-2.5'
                           onClick={() => removeSubscription(sub.id)}
                           isIconOnly
                         >
-                          <Minus className='h-4 w-4' />
+                          <X className='h-4 w-4' />
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+
                 <Button onClick={addSubscription} className='w-full'>
-                  <Plus className='mr-2 h-4 w-4' /> Aggiungi Subscription
+                  <Plus className='mr-2 h-4 w-4' /> Add subscription
                 </Button>
               </TabsContent>
             </Tabs>
 
             <Separator className='my-4' />
 
-            <Button className='w-full'>
-              <Save className='mr-2 h-4 w-4' /> Salva Modifiche
+            <Button color='primary' className='w-full'>
+              <Save className='mr-2 h-4 w-4' /> Submit
             </Button>
           </CardContent>
         </Card>
       </div>
 
-      <div className='flex-1 bg-gray-100'>
+      <div className='flex-1'>
         <LandingPageViewer
           logo={logo}
           name={name}
@@ -268,6 +259,4 @@ const LandingPageCustomizer = () => {
       </div>
     </div>
   );
-};
-
-export default LandingPageCustomizer;
+}
