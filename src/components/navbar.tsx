@@ -17,7 +17,7 @@ export default function Navbar() {
     <header className='flex h-16 w-full items-center justify-between border-b border-border px-5'>
       <span className='text-lg font-black'>Template</span>
 
-      <div className='flex items-center gap-x-5 pr-20'>
+      <div className='flex items-center gap-x-5'>
         <ThemeToggle />
         <Wallet className='w-32' />
       </div>
