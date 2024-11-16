@@ -18,14 +18,14 @@ import {
 import Form from '@/components/ui/controlled-form';
 import Input from '@/components/ui/controlled-form/input';
 
-export default function ClaimSlug() {
-  type TFormSchema = z.infer<typeof formSchema>;
-  const formSchema = z.object({
-    handle: z.string().min(2, {
-      message: 'Handle must be at least 2 characters.'
-    })
-  });
+type TFormSchema = z.infer<typeof formSchema>;
+const formSchema = z.object({
+  handle: z.string().min(2, {
+    message: 'Handle must be at least 2 characters.'
+  })
+});
 
+export default function ClaimSlug() {
   const form = useForm<TFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
