@@ -94,9 +94,15 @@ const LandingPageCustomizer = () => {
           <CardContent>
             <Tabs defaultValue='general' className='w-full'>
               <TabsList className='w-full'>
-                <TabsTrigger value='general'>General</TabsTrigger>
-                <TabsTrigger value='colors'>Colors</TabsTrigger>
-                <TabsTrigger value='subscriptions'>Subscriptions</TabsTrigger>
+                <TabsTrigger value='general' className='w-1/3'>
+                  General
+                </TabsTrigger>
+                <TabsTrigger value='colors' className='w-1/3'>
+                  Colors
+                </TabsTrigger>
+                <TabsTrigger value='subscriptions' className='w-1/3'>
+                  Subscriptions
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value='general' className='space-y-4'>
