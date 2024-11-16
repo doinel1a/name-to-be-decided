@@ -86,7 +86,7 @@ const LandingPageCustomizer = () => {
 
   return (
     <div className='flex h-screen'>
-      <div className='h-screen w-1/3 min-w-[400px] overflow-y-auto border-r p-4'>
+      <div className='h-screen w-1/3 min-w-[400px] overflow-y-auto p-4'>
         <Card className='border-0 shadow-none'>
           <CardHeader>
             <CardTitle>Customize your landing Landing Page</CardTitle>
@@ -257,7 +257,7 @@ const LandingPageCustomizer = () => {
         </Card>
       </div>
 
-      <div className='flex-1 bg-gray-100'>
+      <div className='flex-1'>
         <LandingPageViewer
           logo={logo}
           name={name}
