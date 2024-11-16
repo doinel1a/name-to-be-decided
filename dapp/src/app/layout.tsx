@@ -30,13 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en' suppressHydrationWarning>
       <body>
         <RootProvider>
-          <WithSupportedChains>
-            <div className='grid min-h-[100dvh] grid-rows-[auto_1fr_auto]'>
-              <Navbar />
-              {children}
-              <Footer />
-            </div>
-          </WithSupportedChains>
+          <WithSupportedChains>{children}</WithSupportedChains>
 
           <Toaster richColors closeButton pauseWhenPageIsHidden />
         </RootProvider>
