@@ -5,11 +5,8 @@ import React, { useState } from 'react';
 import type { TColorPalette } from '@/lib/types/color-palette';
 import type { TSubscription } from '@/lib/types/subscription';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/button';
-import { Minus, Plus, Save, Upload } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Minus, Plus, Save } from 'lucide-react';
 
 import LandingPageViewer from '@/components/landing-page-viewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,36 +16,20 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
-type TFormSchema = z.infer<typeof formSchema>;
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.'
-  }),
-  description: z.string().min(2, {
-    message: 'Name must be at least 2 characters.'
-  })
-});
-
-const LandingPageCustomizer = () => {
+export default function LandingPageCustomizer() {
   const [logo, setLogo] = useState<string>('/api/placeholder/100/100');
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+
   const [subscriptions, setSubscriptions] = useState<TSubscription[]>([
-    { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Piano base' }
+    { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Base plan' }
   ]);
+
   const [colors, setColors] = useState<TColorPalette>({
     background: '#ffffff',
     primary: '#007bff',
     secondary: '#6c757d',
     text: '#000000'
-  });
-
-  const form = useForm<TFormSchema>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      description: ''
-    }
   });
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,9 +48,9 @@ const LandingPageCustomizer = () => {
       ...subscriptions,
       {
         id: Date.now().toString(),
-        name: 'Nuova Subscription',
+        name: 'New description',
         price: 0,
-        description: 'Descrizione'
+        description: 'Description'
       }
     ]);
   };
@@ -274,6 +255,4 @@ const LandingPageCustomizer = () => {
       </div>
     </div>
   );
-};
-
-export default LandingPageCustomizer;
+}
