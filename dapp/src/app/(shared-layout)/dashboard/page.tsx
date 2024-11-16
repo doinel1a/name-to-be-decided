@@ -6,7 +6,7 @@ import type { TColorPalette } from '@/lib/types/color-palette';
 import type { TSubscription } from '@/lib/types/subscription';
 
 import { Button } from '@nextui-org/button';
-import { Minus, Plus, Save } from 'lucide-react';
+import { Minus, Plus, Save, X } from 'lucide-react';
 
 import LandingPageViewer from '@/components/landing-page-viewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -182,7 +182,7 @@ export default function LandingPageCustomizer() {
               <TabsContent value='subscriptions' className='space-y-4'>
                 {subscriptions.map((sub) => (
                   <Card key={sub.id}>
-                    <CardContent className='pt-6'>
+                    <CardContent className='relative pt-6'>
                       <div className='flex items-start justify-between'>
                         <div className='flex-1 space-y-4'>
                           <div>
@@ -217,18 +217,22 @@ export default function LandingPageCustomizer() {
                             />
                           </div>
                         </div>
+
                         <Button
+                          size='sm'
                           color='danger'
-                          className='ml-4'
+                          variant='light'
+                          className='absolute right-2.5 top-2.5'
                           onClick={() => removeSubscription(sub.id)}
                           isIconOnly
                         >
-                          <Minus className='h-4 w-4' />
+                          <X className='h-4 w-4' />
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
+
                 <Button onClick={addSubscription} className='w-full'>
                   <Plus className='mr-2 h-4 w-4' /> Add subscription
                 </Button>
@@ -237,7 +241,7 @@ export default function LandingPageCustomizer() {
 
             <Separator className='my-4' />
 
-            <Button className='w-full'>
+            <Button color='primary' className='w-full'>
               <Save className='mr-2 h-4 w-4' /> Submit
             </Button>
           </CardContent>
