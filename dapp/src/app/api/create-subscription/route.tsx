@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createThirdwebClient, PreparedTransaction, sendTransaction } from "thirdweb";
+import { createThirdwebClient, prepareContractCall, PreparedTransaction, sendTransaction } from "thirdweb";
 import { privateKeyToAccount } from "thirdweb/wallets";
 import { baseSepolia } from "thirdweb/chains";
 import { deployERC1155Contract } from "thirdweb/deploys";
 import { getContract, readContract } from "thirdweb";
 import { resolveMethod, sendBatchTransaction } from "thirdweb";
 import { lazyMint, setClaimConditions } from "thirdweb/extensions/erc1155";
+import { ConectoAbi } from "@/contracts/abi";
+import { getSubscriptionContract, setSubscriptionContract } from "@/contracts/allFunctions";
 
 type SubscriptionDetails = {
     name: string,
@@ -55,20 +57,17 @@ export async function POST(request: NextApiRequest, context: { params: Params },
         const generalContract = getContract({
             client: thirdwebClient,
             chain: baseSepolia,
-            address: process.env.CONECTO_CONTRACT_ADDRESS as string
+            address: process.env.CONECTO_CONTRACT_ADDRESS as string,
+            // abi: ConectoAbi
         });
 
         // check if subscription contract exists
 
-        let subscriptionContractAddress = await readContract({
-            contract: generalContract,
-            method: resolveMethod("getSubscriptionContract"),
-            params: [creator_address]
-        }) as unknown as string;
+        let subscriptionContractAddress = await getSubscriptionContract({contract: generalContract,creatorAddress:creator_address});
 
         // if it doesn't exist, deploy it and save newly created address in general smart contract
 
-        if (subscriptionContractAddress == "0x0") {
+        if (subscriptionContractAddress == "") {
             subscriptionContractAddress = await deployERC1155Contract({
                 chain: baseSepolia,
                 client: thirdwebClient,
@@ -84,6 +83,10 @@ export async function POST(request: NextApiRequest, context: { params: Params },
             console.log("Contract deployed to:", subscriptionContractAddress);
 
             //TODO save in general smart contract 
+            const transaction = setSubscriptionContract({creatorAddress:creator_address, subscriptionContract: subscriptionContractAddress, contract: generalContract});
+
+            await sendTransaction({ transaction, account });
+
         }
 
         //create subscrition contract instance
