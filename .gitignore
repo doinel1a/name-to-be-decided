@@ -1,37 +1,37 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# dapp dependencies
+/dapp/node_modules
+/dapp/.pnp
+/dapp/.pnp.js
 
-# testing
-/coverage
-/__tests_results__/
-/playwright-report/
-/playwright/.cache/
+# dapp testing
+/dapp/coverage
+/dapp/__tests_results__/
+/dapp/playwright-report/
+/dapp/playwright/.cache/
 
-# next.js
-/.next/
-/out/
+# dapp next.js
+/dapp/.next/
+/dapp/out/
 
-# production
-/build
+# dapp production
+/dapp/build
 
-# misc
-.DS_Store
-*.pem
+# dapp misc
+/dapp/.DS_Store
+/dapp/*.pem
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# dapp debug
+/dapp/npm-debug.log*
+/dapp/yarn-debug.log*
+/dapp/yarn-error.log*
+/dapp/.pnpm-debug.log*
 
-# local env files
-.env
+# dapp local env files
+/dapp/.env
 
-# vercel
-.vercel
+# dapp vercel
+/dapp/.vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# dapp typescript
+/dapp/*.tsbuildinfo
+/dapp/next-env.d.ts
