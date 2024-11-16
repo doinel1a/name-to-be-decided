@@ -50,7 +50,7 @@ contract Conecto is Permissions, ContractMetadata, ERC2771ContextUpgradeable, Mu
 
     function claimHandle(string memory handle) public payable {
         require(bytes(handle).length > 0, "Handle cannot be empty");
-        require(bytes(creators[_msgSender()].handle).length > 0, "Creator has already a subscription contract");
+        require(bytes(creators[_msgSender()].handle).length == 0, "Creator has already a subscription contract");
 
         string memory _lowerName = validateAndLowerHandle(handle);
 

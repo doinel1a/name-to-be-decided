@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { claimHandle } from '@/contracts/allFunctions';
 import { conectoContract } from './thirdweb/conectoClient';
 import { viemAdapter } from "thirdweb/adapters/viem";
+import { TransactionButton } from 'thirdweb/react';
 
  
 import {
@@ -39,33 +40,33 @@ export default function ClaimSlug() {
     }
   });
 
-  async function onSubmit(handle: string) {
-    console.log(handle);
-    try {
+  // async function onSubmit(handle: string){
+  //   console.log(handle);
+  //   try {
 
-      const account = useActiveAccount();
+  //     const account = useActiveAccount();
 
-      if (!account) {
-        throw new Error('No account found');
-      }
+  //     if (!account) {
+  //       throw new Error('No account found');
+  //     }
 
-      // const account = viemAdapter.walletClient.fromViem({
-      //   walletClient: a.connector?.getAccounts(),
-      // });
+  //     // const account = viemAdapter.walletClient.fromViem({
+  //     //   walletClient: a.connector?.getAccounts(),
+  //     // });
 
-      const transaction = claimHandle({ contract: conectoContract, handle: handle });
+  //     const transaction = claimHandle({ contract: conectoContract, handle: handle });
 
-      const { transactionHash } = await sendTransaction({
-        account,
-        transaction,
-       });
+  //     const { transactionHash } = await sendTransaction({
+  //       account,
+  //       transaction,
+  //      });
 
-      console.log("Transaction succeeded at: " + transaction);
-    }
-    catch (e) {
-      console.error(e);
-    }
-  }
+  //     console.log("Transaction succeeded at: " + transaction);
+  //   }
+  //   catch (e) {
+  //     console.error(e);
+  //   }
+  // }
 
   return (
     <Card className='w-96'>
@@ -75,7 +76,7 @@ export default function ClaimSlug() {
       </CardHeader>
 
       <CardContent>
-        <Form form={form} onValidForm={async () => await onSubmit(form.getValues("handle"))}>
+        <Form form={form}>
           <div className='flex items-center gap-x-2.5'>
             <p className='text-muted-foreground'>conecto.d1a.app/</p>
             <Input control={form.control} name='handle' placeholder='eth-global-bangkok' />
@@ -84,15 +85,22 @@ export default function ClaimSlug() {
       </CardContent>
 
       <CardFooter className='flex flex-col justify-between'>
-        <Button color='primary' className='w-full'>
+        {/* <Button color='primary' className='w-full'>
           Claim
-        </Button>
+        </Button> */}
 
         <div className='mt-5 flex items-center'>
           <p className='text-sm text-muted-foreground'>Already claimed your handle?</p>
-          <Button size='sm' variant='light'>
+          {/* <Button size='sm' variant='light'>
             Connect wallet
-          </Button>
+          </Button> */}
+          <TransactionButton
+            transaction={() => claimHandle({ contract: conectoContract, handle: form.getValues("handle") })}
+            onTransactionConfirmed={() => console.log("Confirmed!")}
+            onError={(e) => console.error(e)}
+          >
+            Create Handle
+          </TransactionButton>;
         </div>
       </CardFooter>
     </Card>

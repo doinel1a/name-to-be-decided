@@ -8,7 +8,7 @@ import type { Metadata, Viewport } from 'next';
 import config from '_config';
 
 import Footer from '@/components/footer';
-import WithSupportedChains from '@/components/hoc/with-supported-chains';
+// import WithSupportedChains from '@/components/hoc/with-supported-chains';
 import Navbar from '@/components/navbar';
 import RootProvider from '@/components/providers/root';
 import { Toaster } from '@/components/ui/sonner';
@@ -30,8 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en' suppressHydrationWarning>
       <body>
         <RootProvider>
-          <WithSupportedChains>{children}</WithSupportedChains>
-
+          {/* <WithSupportedChains>{children}</WithSupportedChains> */}
+          {children}
           <Toaster richColors closeButton pauseWhenPageIsHidden />
         </RootProvider>
       </body>
