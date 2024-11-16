@@ -108,7 +108,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Nome</Label>
+                  <Label>Name</Label>
                   <Input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
@@ -117,7 +117,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Descrizione</Label>
+                  <Label>Description</Label>
                   <Textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -128,7 +128,7 @@ const LandingPageCustomizer = () => {
 
               <TabsContent value='colors' className='space-y-4'>
                 <div>
-                  <Label>Colore Sfondo</Label>
+                  <Label>Background color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -144,7 +144,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Primario</Label>
+                  <Label>Primary color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -160,7 +160,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Secondario</Label>
+                  <Label>Secondary color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -176,7 +176,7 @@ const LandingPageCustomizer = () => {
                 </div>
 
                 <div>
-                  <Label>Colore Testo</Label>
+                  <Label>Text color</Label>
                   <div className='mt-2 flex items-center gap-2'>
                     <Input
                       type='color'
@@ -199,7 +199,7 @@ const LandingPageCustomizer = () => {
                       <div className='flex items-start justify-between'>
                         <div className='flex-1 space-y-4'>
                           <div>
-                            <Label>Nome</Label>
+                            <Label>Name</Label>
                             <Input
                               value={sub.name}
                               onChange={(event) =>
@@ -209,7 +209,7 @@ const LandingPageCustomizer = () => {
                             />
                           </div>
                           <div>
-                            <Label>Prezzo</Label>
+                            <Label>Price</Label>
                             <Input
                               type='number'
                               value={sub.price}
@@ -220,7 +220,7 @@ const LandingPageCustomizer = () => {
                             />
                           </div>
                           <div>
-                            <Label>Descrizione</Label>
+                            <Label>Description</Label>
                             <Textarea
                               value={sub.description}
                               onChange={(event) =>
@@ -243,7 +243,7 @@ const LandingPageCustomizer = () => {
                   </Card>
                 ))}
                 <Button onClick={addSubscription} className='w-full'>
-                  <Plus className='mr-2 h-4 w-4' /> Aggiungi Subscription
+                  <Plus className='mr-2 h-4 w-4' /> Add subscription
                 </Button>
               </TabsContent>
             </Tabs>
@@ -251,7 +251,7 @@ const LandingPageCustomizer = () => {
             <Separator className='my-4' />
 
             <Button className='w-full'>
-              <Save className='mr-2 h-4 w-4' /> Salva Modifiche
+              <Save className='mr-2 h-4 w-4' /> Submit
             </Button>
           </CardContent>
         </Card>
