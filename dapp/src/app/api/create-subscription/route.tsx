@@ -4,7 +4,7 @@ import { privateKeyToAccount } from "thirdweb/wallets";
 import { baseSepolia } from "thirdweb/chains";
 import { deployERC1155Contract } from "thirdweb/deploys";
 import { getContract, readContract } from "thirdweb";
-import { resolveMethod, sendBatchTransaction } from "thirdweb";
+import { sendBatchTransaction } from "thirdweb";
 import { lazyMint, setClaimConditions } from "thirdweb/extensions/erc1155";
 import { ConectoAbi } from "@/contracts/abi";
 import { getSubscriptionContract, setSubscriptionContract } from "@/contracts/allFunctions";
@@ -53,7 +53,6 @@ export async function POST(request: NextApiRequest, context: { params: Params },
     });
 
     try {
-
         const generalContract = getContract({
             client: thirdwebClient,
             chain: baseSepolia,
@@ -86,7 +85,6 @@ export async function POST(request: NextApiRequest, context: { params: Params },
             const transaction = setSubscriptionContract({creatorAddress:creator_address, subscriptionContract: subscriptionContractAddress, contract: generalContract});
 
             await sendTransaction({ transaction, account });
-
         }
 
         //create subscrition contract instance
