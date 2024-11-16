@@ -11,6 +11,7 @@ import { Minus, Plus, Save, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import LandingPageViewer from '@/components/landing-page-viewer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/form/input';
 import { Label } from '@/components/ui/form/label';
@@ -82,46 +83,6 @@ const LandingPageCustomizer = () => {
       subscriptions.map((sub) => (sub.id === id ? { ...sub, [field]: value } : sub))
     );
   };
-
-  const Preview = () => (
-    <div
-      style={{
-        backgroundColor: colors.background,
-        color: colors.text,
-        height: '100vh',
-        padding: '2rem',
-        overflow: 'auto'
-      }}
-      className='rounded-lg shadow-lg'
-    >
-      <div className='flex flex-col items-center space-y-6'>
-        <img src={logo} alt='Logo' className='h-24 w-24 rounded-full' />
-        <h1 style={{ color: colors.primary }} className='text-3xl font-bold'>
-          {name}
-        </h1>
-        <p className='max-w-md text-center'>{description}</p>
-
-        <div className='mt-8 grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-          {subscriptions.map((sub) => (
-            <div
-              key={sub.id}
-              style={{ borderColor: colors.secondary }}
-              className='rounded-lg border p-4'
-            >
-              <h3 style={{ color: colors.primary }} className='text-xl font-semibold'>
-                {sub.name}
-              </h3>
-              <p className='my-2 text-2xl font-bold'>€{sub.price}</p>
-              <p className='text-sm'>{sub.description}</p>
-              <Button style={{ backgroundColor: colors.primary }} className='mt-4 w-full'>
-                Sottoscrivi
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className='flex h-screen'>
@@ -297,7 +258,13 @@ const LandingPageCustomizer = () => {
       </div>
 
       <div className='flex-1 bg-gray-100'>
-        <Preview />
+        <LandingPageViewer
+          logo={logo}
+          name={name}
+          description={description}
+          colors={colors}
+          subscriptions={subscriptions}
+        />
       </div>
     </div>
   );
