@@ -512,6 +512,37 @@ import {
       params: [options.creatorAddress]
     });
   };
+
+  export type GetHandleParams = {
+    creatorAddress: AbiParameterToPrimitiveType<{ "internalType": "address", "name": "creatorAddress", "type": "address" }>
+  };
+
+  
+  export async function getHandle(
+    options: BaseTransactionOptions<GetHandleParams>
+  ) {
+    return readContract({
+      contract: options.contract,
+      method: [
+        "0x6d4ce63c", // Function selector for getHandle(address)
+        [
+          {
+            "internalType": "address",
+            "name": "creatorAddress",
+            "type": "address"
+          }
+        ],
+        [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ]
+      ],
+      params: [options.creatorAddress]
+    });
+  }
   
   
   /**

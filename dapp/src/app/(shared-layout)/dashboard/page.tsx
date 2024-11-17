@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { TColorPalette } from '@/lib/types/color-palette';
 import type { TSubscription } from '@/lib/types/subscription';
@@ -16,10 +16,76 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
+import { useActiveAccount } from 'thirdweb/react';
+import { getWebsitePreferencesByHandle, getHandle, getSubscriptionContract } from '@/contracts/allFunctions';
+import { conectoClient, conectoContract } from '@/components/thirdweb/conectoClient';
+import { WebsitePreference } from '@/app/[handle]/page';
+import { getContract, NFT } from 'thirdweb';
+import { getNFTs } from 'thirdweb/extensions/erc1155';
+import { baseSepolia } from 'thirdweb/chains';
+import { useRouter } from 'next/navigation';
+
 export default function LandingPageCustomizer() {
   const [logo, setLogo] = useState<string>('/api/placeholder/100/100');
   const [name, setName] = useState<string>('');
+  const [handle, setHandle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [subscriptionContractAddress, setSubscriptionContractAddress] = useState<string>('');
+  const [subscriptionContract, setSubscriptionContract] = useState<any>(null);
+  const activeAccount = useActiveAccount();
+  const router = useRouter();
+
+  function setInfoByPreferences(preferences: WebsitePreference) {
+    setLogo(preferences.logo);
+    setName(preferences.name);
+    setDescription(preferences.description);
+  }
+
+  useEffect(() => {
+    const getDashboardInfo = async () => {
+      console.log("activeAccount:", activeAccount?.address);
+      const handle = await getHandle({
+        contract: conectoContract,
+        creatorAddress: activeAccount?.address as string
+      });
+
+      setHandle(handle);
+
+      const pref = await getWebsitePreferencesByHandle({
+        contract: conectoContract,
+        handle: handle
+      });
+      setInfoByPreferences(pref);
+
+      setSubscriptionContractAddress(await getSubscriptionContract({
+        contract: conectoContract,
+        creatorAddress: activeAccount?.address as string,
+      }));
+
+      const tempSubscriptionContract = getContract({
+        client: conectoClient,
+        chain: baseSepolia,
+        address: subscriptionContractAddress,
+        // // optional ABI
+        // abi: [...],
+      });
+      setSubscriptionContract(tempSubscriptionContract);
+
+      const nfts = await getNFTs({
+        contract: tempSubscriptionContract
+      });
+      console.log(nfts?.length);
+
+      nfts?.forEach((nft: NFT) => {
+        console.log(nft);
+        //TODO add subscriptions
+
+      });
+    }
+    if (activeAccount) {
+      getDashboardInfo();
+    }
+  }, [activeAccount]);
 
   const [subscriptions, setSubscriptions] = useState<TSubscription[]>([
     { id: Date.now().toString(), name: 'Base', price: 9.99, description: 'Base plan' }
@@ -53,6 +119,7 @@ export default function LandingPageCustomizer() {
         description: 'Description'
       }
     ]);
+
   };
 
   const removeSubscription = (id: string) => {
@@ -65,12 +132,45 @@ export default function LandingPageCustomizer() {
     );
   };
 
+  const handleSubmit = async () => {
+    const formattedSubscriptions = subscriptions.map(sub => ({
+      name: sub.name,
+      price: sub.price,
+      description: sub.description
+    }));
+
+    const payload = {
+      address: activeAccount?.address,
+      slugName: handle,
+      subscriptions: formattedSubscriptions
+    };
+
+    try {
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        console.log('Subscriptions saved successfully');
+        router.push('/' + handle);
+      } else {
+        console.error('Failed to save subscriptions');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <div className='flex h-screen'>
       <div className='h-screen w-1/3 min-w-[400px] overflow-y-auto p-4'>
         <Card className='border-0 shadow-none'>
           <CardHeader>
-            <CardTitle>Customize your landing Landing Page</CardTitle>
+            <CardTitle>Customize your Landing Page</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue='general' className='w-full'>
@@ -241,7 +341,7 @@ export default function LandingPageCustomizer() {
 
             <Separator className='my-4' />
 
-            <Button color='primary' className='w-full'>
+            <Button color='primary' className='w-full' onClick={handleSubmit}>
               <Save className='mr-2 h-4 w-4' /> Submit
             </Button>
           </CardContent>

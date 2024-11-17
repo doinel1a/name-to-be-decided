@@ -65,6 +65,10 @@ contract Conecto is Permissions, ContractMetadata, ERC2771ContextUpgradeable, Mu
         emit HandleClaimed(_msgSender(), handle);
     }
 
+    function getHandle(address creatorAddress) public view returns (string memory) {
+        return creators[creatorAddress].handle;
+    }
+
     function setSubscriptionContract(address creatorAddress, string memory subscriptionContract) public onlyRole(DEFAULT_ADMIN_ROLE){
         creators[creatorAddress].subscriptionContract = subscriptionContract;
     }

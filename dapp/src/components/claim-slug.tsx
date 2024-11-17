@@ -10,6 +10,8 @@ import { claimHandle } from '@/contracts/allFunctions';
 import { conectoContract } from './thirdweb/conectoClient';
 import { viemAdapter } from "thirdweb/adapters/viem";
 import { TransactionButton } from 'thirdweb/react';
+import { useRouter } from 'next/navigation';
+
 
  
 import {
@@ -39,6 +41,8 @@ export default function ClaimSlug() {
       handle: ''
     }
   });
+
+  const router = useRouter();
 
   // async function onSubmit(handle: string){
   //   console.log(handle);
@@ -96,7 +100,7 @@ export default function ClaimSlug() {
           </Button> */}
           <TransactionButton
             transaction={() => claimHandle({ contract: conectoContract, handle: form.getValues("handle") })}
-            onTransactionConfirmed={() => console.log("Confirmed!")}
+            onTransactionConfirmed={() => router.push('/dashboard')}
             onError={(e) => console.error(e)}
           >
             Create Handle
